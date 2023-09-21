@@ -48,7 +48,7 @@ namespace adonet_db_videogame
             }
 
         }
-        
+
         //Ricerca un videogame per id
 
         public static void GetVideogameById(long videogameId)
@@ -71,15 +71,87 @@ namespace adonet_db_videogame
                             Videogame videogameById = new Videogame(data.GetInt64(0), data.GetString(1), data.GetString(2), data.GetDateTime(3), data.GetInt64(4));
                             Console.WriteLine(videogameById);
                         }
-                        
+
                     }
 
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
             }
+        }
+
+        //Ricerca tutti i videogiochi che contengono nel nome un tuo input
+
+        public static List<Videogame> GetVideogameByInput(string input)
+        {
+            List<Videogame> videogames = new List<Videogame>();
+
+            using (SqlConnection connection = new SqlConnection(connectionStr))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, name, overview, release_date, software_house_id FROM videogames WHERE name LIKE '%'+@input+'%'";
+
+                    using SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@input", input);
+
+                    using (SqlDataReader data = cmd.ExecuteReader())
+                    {
+                        if (data.Read())
+                        {
+                            Videogame videogameByInput = new Videogame(data.GetInt64(0), data.GetString(1), data.GetString(2), data.GetDateTime(3), data.GetInt64(4));
+                            videogames.Add(videogameByInput);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+              
+                }
+                
+                return videogames;
+            }
+        }
+
+        //cancella un videogioco
+
+        public static bool DeleteVideogame(long idToDelete)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionStr))
+            {
+
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM videogames WHERE id=@Id";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.Add(new SqlParameter("@Id", idToDelete));
+
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                return false;
+
+            }
+
         }
     }
 }

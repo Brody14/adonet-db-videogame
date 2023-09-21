@@ -72,6 +72,52 @@
                         }
 
                         break;
+
+                        case 3:
+                        {
+
+                            Console.Write("Inserisci la parola che vuoi cercare all'interno del nome del videogioco: ");
+                            string input = Console.ReadLine();
+                            List<Videogame> videogames = VideogameManager.GetVideogameByInput(input);
+
+                            foreach(Videogame vid in videogames)
+                            {
+                                Console.WriteLine(vid);
+                            }
+                           
+                        }
+                        break;
+
+                        case 4:
+                        {
+                            Console.Write("Inserisci l'ID del videogioco che vuoi cancellare: ");
+                            long idToDelete = long.Parse(Console.ReadLine());
+
+                            bool deleted = VideogameManager.DeleteVideogame(idToDelete);
+
+                            if (deleted)
+                            {
+                                Console.WriteLine($"Il videogioco con ID {idToDelete} è stato cancellato");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Il videogioco con ID {idToDelete} non è stato cancellato");
+                            }
+
+
+                        }
+                        break;
+
+                    case 5:
+                        {
+                            Environment.Exit(0);
+                        }
+                        break;
+                    default:
+                        {
+                            Console.WriteLine("Non hai selezionato un opzione valida!");
+                        }
+                        break;
                 }
             }
         }
