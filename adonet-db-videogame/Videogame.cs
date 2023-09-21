@@ -6,22 +6,26 @@ using System.Threading.Tasks;
 
 namespace adonet_db_videogame
 {
-    internal class Videogame
+    public class Videogame
     {
 
         public long Id {  get; private set; }
         public string Name { get; set; }
         public string Overview { get; set; }
         public DateTime Release_date { get; set; }
+        public long Software_house_id { get; private set; }
 
-        public Videogame(long id, string name, string overview, DateTime release_date)
+        //COSTRUTTORE
+        public Videogame(long id, string name, string overview, DateTime release_date, long software_house_id)
         {
             Id = id;
             Name = name;
             Overview = overview;
             Release_date = release_date;
+            Software_house_id = software_house_id;
         }
 
+        //METODI
         public override string ToString()
         {
             return $"ID: {Id}, videogame: {Name}, trama: {Overview}, data di rilascio: {Release_date}";
