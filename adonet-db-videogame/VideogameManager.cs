@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +45,40 @@ namespace adonet_db_videogame
                 }
 
                 return false;
+            }
+
+        }
+        
+        //Ricerca un videogame per id
+
+        public static void GetVideogameById(long videogameId)
+        {
+            using (SqlConnection connection = new SqlConnection((string)connectionStr))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, name, overview, release_date, software_house_id FROM videogames WHERE Id=@Id";
+
+                    using SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@Id", videogameId);
+
+                    using (SqlDataReader data = cmd.ExecuteReader())
+                    {
+                        if (data.Read())
+                        {
+                            Videogame videogameById = new Videogame(data.GetInt64(0), data.GetString(1), data.GetString(2), data.GetDateTime(3), data.GetInt64(4));
+                            Console.WriteLine(videogameById);
+                        }
+                        
+                    }
+
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
     }

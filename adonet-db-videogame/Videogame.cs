@@ -28,7 +28,11 @@ namespace adonet_db_videogame
         //METODI
         public override string ToString()
         {
-            return $"ID: {Id}, videogame: {Name}, trama: {Overview}, data di rilascio: {Release_date}";
+            return $@"
+ID: {Id} 
+Nome videogame: {Name}
+Trama: {Overview}
+Data di rilascio: {Release_date.ToString("dd/MM/yyyy")}";
         }
     }
 }

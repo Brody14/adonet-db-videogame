@@ -62,6 +62,16 @@
                         }
 
                         break;
+
+                        case 2:
+                        {
+                            Console.Write("Inserisci l'ID del videogioco che vuoi cercare: ");
+                            long idSearched = long.Parse(Console.ReadLine());
+                            VideogameManager.GetVideogameById(idSearched);
+
+                        }
+
+                        break;
                 }
             }
         }
