@@ -79,6 +79,8 @@ namespace adonet_db_videogame
                 {
                     Console.WriteLine(ex.Message);
                 }
+
+                throw new Exception("Videogame non trovato");
             }
         }
 
@@ -94,19 +96,22 @@ namespace adonet_db_videogame
                 {
                     connection.Open();
 
-                    string query = "SELECT id, name, overview, release_date, software_house_id FROM videogames WHERE name LIKE '%'+@input+'%'";
+                    string query = "SELECT id, name, overview, release_date, software_house_id FROM videogames WHERE name LIKE(@input)";
 
-                    using SqlCommand cmd = new SqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@input", input);
-
-                    using (SqlDataReader data = cmd.ExecuteReader())
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        if (data.Read())
+                        cmd.Parameters.Add(new SqlParameter("@input", "%" + input + "%"));
+                        using (SqlDataReader data = cmd.ExecuteReader())
                         {
-                            Videogame videogameByInput = new Videogame(data.GetInt64(0), data.GetString(1), data.GetString(2), data.GetDateTime(3), data.GetInt64(4));
-                            videogames.Add(videogameByInput);
+                            while (data.Read())
+                            {
+                                Videogame videogameByInput = new Videogame(data.GetInt64(0), data.GetString(1), data.GetString(2), data.GetDateTime(3), data.GetInt64(4));
+                                videogames.Add(videogameByInput);
+                            }
                         }
+
                     }
+
                 }
                 catch (Exception ex)
                 {

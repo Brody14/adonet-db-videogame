@@ -65,9 +65,16 @@
 
                         case 2:
                         {
-                            Console.Write("Inserisci l'ID del videogioco che vuoi cercare: ");
-                            long idSearched = long.Parse(Console.ReadLine());
-                            VideogameManager.GetVideogameById(idSearched);
+                            try
+                            {
+                                Console.Write("Inserisci l'ID del videogioco che vuoi cercare: ");
+                                long idSearched = long.Parse(Console.ReadLine());
+                                VideogameManager.GetVideogameById(idSearched);
+                            }
+                            catch(Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
 
                         }
 
@@ -80,9 +87,12 @@
                             string input = Console.ReadLine();
                             List<Videogame> videogames = VideogameManager.GetVideogameByInput(input);
 
-                            foreach(Videogame vid in videogames)
+                           if(videogames.Count > 0)
                             {
-                                Console.WriteLine(vid);
+                                foreach (Videogame vid in videogames)
+                                {
+                                    Console.WriteLine(vid);
+                                }
                             }
                            
                         }
